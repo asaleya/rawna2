@@ -48,7 +48,7 @@ function draw() {
   ctx.textAlign = "left";
   ctx.fillStyle = "white";
   ctx.font = "italic normal 13px monospace";
-  ctx.fillText("Made with 💖 by Ashik Paul", 0, cy);
+  ctx.fillText("Made with 💖 by Amr Diab", 0, cy);
   for (let s of flowersArr) {
     s.fallFlower();
     s.showFlower();
