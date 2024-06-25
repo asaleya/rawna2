@@ -20,6 +20,19 @@
       align-items: center;
       background-color: #f0f0f0;
     }
+    body::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('image.jpg'); /* Replace with your image path */
+      background-size: cover;
+      background-position: center;
+      opacity: 0.2;
+      z-index: -1; /* Ensure the pseudo-element is behind other content */
+    }
     #myCanvas {
       position: absolute;
       top: 0;
@@ -57,7 +70,7 @@
       border: none;
       border-radius: 5px;
       background-color: #007BFF;
-      color: white;
+      color: black;
       font-size: 16px;
       cursor: pointer;
       transition: background-color 0.3s;
