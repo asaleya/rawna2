@@ -10,21 +10,38 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background: rgba(255, 255, 255, 0.8);
+      background: rgba(255, 255, 255, 0.9);
       padding: 20px;
       border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       display: none;
     }
     #quizContainer p {
-      font-size: 18px;
+      font-size: 22px;
+      font-family: 'Arial', sans-serif;
+      margin-bottom: 20px;
     }
     #quizContainer button {
       margin-top: 10px;
       padding: 10px 20px;
       border: none;
+      border-radius: 5px;
       background-color: #007BFF;
       color: white;
+      font-size: 16px;
       cursor: pointer;
+      transition: background-color 0.3s;
+      margin-right: 10px;
+    }
+    #quizContainer button.middle {
+      background-color: #FFC107;
+    }
+    #quizContainer button:hover {
+      background-color: #0056b3;
+    }
+    #quizContainer button.middle:hover {
+      background-color: #e0a800;
     }
   </style>
 </head>
@@ -33,6 +50,7 @@
   <div id="quizContainer">
     <p id="question"></p>
     <button onclick="answerQuestion('love')">Yes</button>
+    <button class="middle" onclick="answerQuestion('heart')">Maybe</button>
     <button onclick="answerQuestion('notLove')">No</button>
   </div>
 
@@ -75,6 +93,46 @@
           this.xc = Math.floor(c.width * Math.random() | 0);
           this.yd = Math.floor(-50 | 0);
         }
+        ctx.restore();
+      }
+    }
+
+    class Heart {
+      constructor() {
+        this.x = c.width * Math.random();
+        this.y = c.height * Math.random();
+        this.size = 50;
+        this.color = "red";
+      }
+
+      drawHeart() {
+        ctx.save();
+        ctx.beginPath();
+        let topCurveHeight = this.size * 0.3;
+        ctx.moveTo(this.x, this.y + topCurveHeight);
+        ctx.bezierCurveTo(
+          this.x, this.y,
+          this.x - this.size / 2, this.y,
+          this.x - this.size / 2, this.y + topCurveHeight
+        );
+        ctx.bezierCurveTo(
+          this.x - this.size / 2, this.y + (this.size + topCurveHeight) / 2,
+          this.x, this.y + (this.size + topCurveHeight) / 2,
+          this.x, this.y + this.size
+        );
+        ctx.bezierCurveTo(
+          this.x, this.y + (this.size + topCurveHeight) / 2,
+          this.x + this.size / 2, this.y + (this.size + topCurveHeight) / 2,
+          this.x + this.size / 2, this.y + topCurveHeight
+        );
+        ctx.bezierCurveTo(
+          this.x + this.size / 2, this.y,
+          this.x, this.y,
+          this.x, this.y + topCurveHeight
+        );
+        ctx.closePath();
+        ctx.fillStyle = this.color;
+        ctx.fill();
         ctx.restore();
       }
     }
@@ -127,6 +185,8 @@
       quizContainer.style.display = 'none';
       if (answer === 'love') {
         flowersArr.push(new Flower());
+      } else if (answer === 'heart') {
+        drawHeart();
       } else {
         showSadFace();
       }
@@ -134,10 +194,18 @@
       showNextQuestion();
     }
 
+    function drawHeart() {
+      const heart = new Heart();
+      heart.drawHeart();
+      setTimeout(() => {
+        ctx.clearRect(heart.x - heart.size, heart.y - heart.size, heart.size * 2, heart.size * 2);
+      }, 1000);
+    }
+
     function showSadFace() {
       ctx.fillStyle = "blue";
       ctx.font = "bold 48px Arial";
-      ctx.fillText("😢", c.width / 2, c.height / 2);
+      ctx.fillText("😢", c.width / 2 - 24, c.height / 2 - 24);
       setTimeout(() => {
         ctx.clearRect(c.width / 2 - 50, c.height / 2 - 50, 100, 100);
       }, 1000);
