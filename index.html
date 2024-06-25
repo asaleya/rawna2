@@ -217,21 +217,23 @@
     }
 
     function answerQuestion(answer) {
-      quizContainer.style.display = 'none';
       if (answer === 'love') {
-        flowersArr.push(new Flower());
-        setTimeout(showNextQuestion, 1000);
+        showFlowerResponse();
       } else if (answer === 'heart') {
         drawHeart();
-        setTimeout(showNextQuestion, 1000);
+        showHeartResponse();
       } else {
         showSadFace();
-        setTimeout(showNextQuestion, 1000);
       }
+      setTimeout(showNextQuestion, 2000);
       currentQuestion++;
     }
 
-    function drawHeart() {
+    function showFlowerResponse() {
+      flowersArr.push(new Flower());
+    }
+
+    function showHeartResponse() {
       const heart = new Heart();
       heart.drawHeart();
       setTimeout(() => {
