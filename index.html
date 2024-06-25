@@ -5,20 +5,38 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Floating Quiz Questions</title>
   <style>
-    #quizContainer {
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #f0f0f0;
+    }
+    #myCanvas {
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+      top: 0;
+      left: 0;
+    }
+    #quizContainer {
       background: rgba(255, 255, 255, 0.9);
       padding: 20px;
       border-radius: 10px;
       text-align: center;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       display: none;
+      z-index: 1;
+    }
+    #quizContainer h2 {
+      font-size: 22px;
+      font-family: 'Arial', sans-serif;
+      margin-bottom: 20px;
     }
     #quizContainer p {
-      font-size: 22px;
+      font-size: 20px;
       font-family: 'Arial', sans-serif;
       margin-bottom: 20px;
     }
@@ -48,6 +66,7 @@
 <body>
   <canvas id="myCanvas"></canvas>
   <div id="quizContainer">
+    <h2 id="questionHeader"></h2>
     <p id="question"></p>
     <button onclick="answerQuestion('love')">Yes</button>
     <button class="middle" onclick="answerQuestion('heart')">Maybe</button>
@@ -168,15 +187,31 @@
       "Do you believe true love lasts forever?"
     ];
 
+    const questionNouns = [
+      "romantic inclinations",
+      "taste in movies",
+      "belief in soulmates",
+      "values",
+      "empathy",
+      "beliefs",
+      "optimism",
+      "affection habits",
+      "generosity",
+      "faith in love"
+    ];
+
     let currentQuestion = 0;
     const quizContainer = document.getElementById('quizContainer');
     const questionElement = document.getElementById('question');
+    const questionHeader = document.getElementById('questionHeader');
 
     function showNextQuestion() {
       if (currentQuestion < questions.length) {
         questionElement.innerText = questions[currentQuestion];
+        questionHeader.innerText = `Question for you rawna2 to test your ${questionNouns[currentQuestion]}`;
         quizContainer.style.display = 'block';
       } else {
+        showResultMessage();
         quizContainer.style.display = 'none';
       }
     }
@@ -185,13 +220,15 @@
       quizContainer.style.display = 'none';
       if (answer === 'love') {
         flowersArr.push(new Flower());
+        setTimeout(showNextQuestion, 1000);
       } else if (answer === 'heart') {
         drawHeart();
+        setTimeout(showNextQuestion, 1000);
       } else {
         showSadFace();
+        setTimeout(showNextQuestion, 1000);
       }
       currentQuestion++;
-      showNextQuestion();
     }
 
     function drawHeart() {
@@ -209,6 +246,12 @@
       setTimeout(() => {
         ctx.clearRect(c.width / 2 - 50, c.height / 2 - 50, 100, 100);
       }, 1000);
+    }
+
+    function showResultMessage() {
+      ctx.fillStyle = "green";
+      ctx.font = "bold 24px Arial";
+      ctx.fillText("Congratulations rawna2, you have proved your romantic prowess!", c.width / 2 - 300, c.height / 2);
     }
 
     // Start the quiz
