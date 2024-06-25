@@ -220,8 +220,7 @@
       if (answer === 'love') {
         showFlowerResponse();
       } else if (answer === 'heart') {
-        drawHeart();
-        showHeartResponse();
+        drawHeartResponse();
       } else {
         showSadFace();
       }
@@ -233,7 +232,7 @@
       flowersArr.push(new Flower());
     }
 
-    function showHeartResponse() {
+    function drawHeartResponse() {
       const heart = new Heart();
       heart.drawHeart();
       setTimeout(() => {
