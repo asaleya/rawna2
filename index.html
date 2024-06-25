@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Floating Quiz Questions</title>
+  <style>
+    #quizContainer {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(255, 255, 255, 0.8);
+      padding: 20px;
+      border-radius: 10px;
+      display: none;
+    }
+    #quizContainer p {
+      font-size: 18px;
+    }
+    #quizContainer button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      border: none;
+      background-color: #007BFF;
+      color: white;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="myCanvas"></canvas>
+  <div id="quizContainer">
+    <p id="question"></p>
+    <button onclick="answerQuestion('love')">Yes</button>
+    <button onclick="answerQuestion('notLove')">No</button>
+  </div>
+
+  <script>
+    var c = document.getElementById("myCanvas");
+    c.width = window.innerWidth;
+    c.height = window.innerHeight;
+    var ctx = c.getContext("2d");
+    var cy = c.height;
+
+    class Flower {
+      constructor() {
+        this.xc = c.width * Math.random() | 0;
+        this.yd = -c.height * Math.random() | 0;
+        this.color = Math.random() * 360 | 0;
+        this.border = Math.random() * 360 | 0;
+      }
+
+      showFlower() {
+        ctx.beginPath();
+        ctx.moveTo(this.xc, this.yd);
+        for (let a = 0; a < 2 * Math.PI; a += 0.02) {
+          this.r = 30 * Math.cos(4 * a);
+          this.x = this.xc + this.r * Math.cos(a);
+          this.y = this.yd + this.r * Math.sin(a);
+          ctx.lineWidth = 1;
+          ctx.lineTo(this.x, this.y);
+        }
+        ctx.fillStyle = "hsl(" + this.color + ",100%,50%)";
+        ctx.strokeStyle = "hsl(" + this.border + ",100%,50%)";
+        ctx.stroke();
+        ctx.fill();
+      }
+
+      fallFlower() {
+        ctx.save();
+        this.yd += 5;
+        ctx.rotate((Math.random() * 180 | 0) * Math.PI / 180);
+        if (this.yd > c.height || this.yd < -c.height) {
+          this.xc = Math.floor(c.width * Math.random() | 0);
+          this.yd = Math.floor(-50 | 0);
+        }
+        ctx.restore();
+      }
+    }
+
+    let flowersArr = [];
+    for (let i = 0; i < 100; i++) flowersArr.push(new Flower());
+
+    function draw() {
+      ctx.clearRect(0, 0, c.width, c.height);
+      ctx.textAlign = "left";
+      ctx.fillStyle = "white";
+      ctx.font = "italic normal 13px monospace";
+      ctx.fillText("Made with 💖 by Amr Diab", 0, cy);
+      for (let s of flowersArr) {
+        s.fallFlower();
+        s.showFlower();
+      }
+      requestAnimationFrame(draw);
+    }
+    draw();
+
+    // Quiz Questions
+    const questions = [
+      "Do you love the idea of everlasting love?",
+      "Do you enjoy romantic movies?",
+      "Do you believe in soulmates?",
+      "Is love more important than money?",
+      "Do you feel happy when you see others in love?",
+      "Do you believe in love at first sight?",
+      "Do you think love can conquer all obstacles?",
+      "Do you enjoy giving and receiving affection?",
+      "Do you find joy in making your partner happy?",
+      "Do you believe true love lasts forever?"
+    ];
+
+    let currentQuestion = 0;
+    const quizContainer = document.getElementById('quizContainer');
+    const questionElement = document.getElementById('question');
+
+    function showNextQuestion() {
+      if (currentQuestion < questions.length) {
+        questionElement.innerText = questions[currentQuestion];
+        quizContainer.style.display = 'block';
+      } else {
+        quizContainer.style.display = 'none';
+      }
+    }
+
+    function answerQuestion(answer) {
+      quizContainer.style.display = 'none';
+      if (answer === 'love') {
+        flowersArr.push(new Flower());
+      } else {
+        showSadFace();
+      }
+      currentQuestion++;
+      showNextQuestion();
+    }
+
+    function showSadFace() {
+      ctx.fillStyle = "blue";
+      ctx.font = "bold 48px Arial";
+      ctx.fillText("😢", c.width / 2, c.height / 2);
+      setTimeout(() => {
+        ctx.clearRect(c.width / 2 - 50, c.height / 2 - 50, 100, 100);
+      }, 1000);
+    }
+
+    // Start the quiz
+    showNextQuestion();
+  </script>
+</body>
+</html>
