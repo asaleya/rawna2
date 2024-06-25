@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Floating Quiz Questions</title>
+  <title>Romantic Quiz</title>
   <style>
     html, body {
       margin: 0;
@@ -16,7 +16,7 @@
       align-items: center;
       background-color: #f0f0f0;
     }
-    #myCanvas {
+    canvas {
       position: absolute;
       top: 0;
       left: 0;
@@ -27,8 +27,6 @@
       border-radius: 10px;
       text-align: center;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-      display: none;
-      z-index: 1;
     }
     #quizContainer h2 {
       font-size: 22px;
@@ -81,97 +79,53 @@
     var cy = c.height;
 
     class Flower {
-      constructor() {
-        this.xc = c.width * Math.random() | 0;
-        this.yd = -c.height * Math.random() | 0;
-        this.color = Math.random() * 360 | 0;
-        this.border = Math.random() * 360 | 0;
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.radius = 20;
+        this.color = `hsl(${Math.random() * 360}, 100%, 50%)`;
       }
 
-      showFlower() {
+      draw() {
         ctx.beginPath();
-        ctx.moveTo(this.xc, this.yd);
-        for (let a = 0; a < 2 * Math.PI; a += 0.02) {
-          this.r = 30 * Math.cos(4 * a);
-          this.x = this.xc + this.r * Math.cos(a);
-          this.y = this.yd + this.r * Math.sin(a);
-          ctx.lineWidth = 1;
-          ctx.lineTo(this.x, this.y);
-        }
-        ctx.fillStyle = "hsl(" + this.color + ",100%,50%)";
-        ctx.strokeStyle = "hsl(" + this.border + ",100%,50%)";
-        ctx.stroke();
-        ctx.fill();
-      }
-
-      fallFlower() {
-        ctx.save();
-        this.yd += 5;
-        ctx.rotate((Math.random() * 180 | 0) * Math.PI / 180);
-        if (this.yd > c.height || this.yd < -c.height) {
-          this.xc = Math.floor(c.width * Math.random() | 0);
-          this.yd = Math.floor(-50 | 0);
-        }
-        ctx.restore();
-      }
-    }
-
-    class Heart {
-      constructor() {
-        this.x = c.width * Math.random();
-        this.y = c.height * Math.random();
-        this.size = 50;
-        this.color = "red";
-      }
-
-      drawHeart() {
-        ctx.save();
-        ctx.beginPath();
-        let topCurveHeight = this.size * 0.3;
-        ctx.moveTo(this.x, this.y + topCurveHeight);
-        ctx.bezierCurveTo(
-          this.x, this.y,
-          this.x - this.size / 2, this.y,
-          this.x - this.size / 2, this.y + topCurveHeight
-        );
-        ctx.bezierCurveTo(
-          this.x - this.size / 2, this.y + (this.size + topCurveHeight) / 2,
-          this.x, this.y + (this.size + topCurveHeight) / 2,
-          this.x, this.y + this.size
-        );
-        ctx.bezierCurveTo(
-          this.x, this.y + (this.size + topCurveHeight) / 2,
-          this.x + this.size / 2, this.y + (this.size + topCurveHeight) / 2,
-          this.x + this.size / 2, this.y + topCurveHeight
-        );
-        ctx.bezierCurveTo(
-          this.x + this.size / 2, this.y,
-          this.x, this.y,
-          this.x, this.y + topCurveHeight
-        );
-        ctx.closePath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
         ctx.fillStyle = this.color;
         ctx.fill();
-        ctx.restore();
+      }
+
+      fall() {
+        this.y += Math.random() * 2 + 1;
+        this.draw();
       }
     }
 
-    let flowersArr = [];
-    for (let i = 0; i < 100; i++) flowersArr.push(new Flower());
+    let flowers = [];
 
-    function draw() {
+    function createFlowers() {
+      for (let i = 0; i < 50; i++) {
+        let x = Math.random() * c.width;
+        let y = Math.random() * -c.height;
+        let flower = new Flower(x, y);
+        flowers.push(flower);
+      }
+    }
+
+    function drawFlowers() {
       ctx.clearRect(0, 0, c.width, c.height);
-      ctx.textAlign = "left";
-      ctx.fillStyle = "white";
-      ctx.font = "italic normal 13px monospace";
-      ctx.fillText("Made with 💖 by Amr Diab", 0, cy);
-      for (let s of flowersArr) {
-        s.fallFlower();
-        s.showFlower();
+      for (let flower of flowers) {
+        flower.fall();
+        if (flower.y > c.height + flower.radius) {
+          flower.y = Math.random() * -c.height;
+        }
       }
-      requestAnimationFrame(draw);
+      requestAnimationFrame(drawFlowers);
     }
-    draw();
+
+    function startQuiz() {
+      createFlowers();
+      drawFlowers();
+      showNextQuestion();
+    }
 
     // Quiz Questions
     const questions = [
@@ -208,7 +162,7 @@
     function showNextQuestion() {
       if (currentQuestion < questions.length) {
         questionElement.innerText = questions[currentQuestion];
-        questionHeader.innerText = `Question for you rawna2 to test your ${questionNouns[currentQuestion]}`;
+        questionHeader.innerText = `Question for you to test your ${questionNouns[currentQuestion]}`;
         quizContainer.style.display = 'block';
       } else {
         showResultMessage();
@@ -220,43 +174,47 @@
       if (answer === 'love') {
         showFlowerResponse();
       } else if (answer === 'heart') {
-        drawHeartResponse();
+        showHeartResponse();
       } else {
         showSadFace();
       }
-      setTimeout(showNextQuestion, 2000);
       currentQuestion++;
+      setTimeout(showNextQuestion, 2000); // Delay before showing next question
     }
 
     function showFlowerResponse() {
-      flowersArr.push(new Flower());
+      let x = Math.random() * c.width;
+      let y = Math.random() * c.height;
+      let flower = new Flower(x, y);
+      flowers.push(flower);
     }
 
-    function drawHeartResponse() {
-      const heart = new Heart();
-      heart.drawHeart();
+    function showHeartResponse() {
+      ctx.fillStyle = 'red';
+      ctx.font = '48px serif';
+      ctx.fillText('❤️', c.width / 2 - 24, c.height / 2 - 24);
       setTimeout(() => {
-        ctx.clearRect(heart.x - heart.size, heart.y - heart.size, heart.size * 2, heart.size * 2);
+        ctx.clearRect(0, 0, c.width, c.height);
       }, 1000);
     }
 
     function showSadFace() {
-      ctx.fillStyle = "blue";
-      ctx.font = "bold 48px Arial";
-      ctx.fillText("😢", c.width / 2 - 24, c.height / 2 - 24);
+      ctx.fillStyle = 'blue';
+      ctx.font = '48px serif';
+      ctx.fillText('😢', c.width / 2 - 24, c.height / 2 - 24);
       setTimeout(() => {
-        ctx.clearRect(c.width / 2 - 50, c.height / 2 - 50, 100, 100);
+        ctx.clearRect(0, 0, c.width, c.height);
       }, 1000);
     }
 
     function showResultMessage() {
       ctx.fillStyle = "green";
       ctx.font = "bold 24px Arial";
-      ctx.fillText("Congratulations rawna2, you have proved your romantic prowess!", c.width / 2 - 300, c.height / 2);
+      ctx.fillText("Congratulations, you have completed the quiz!", c.width / 2 - 300, c.height / 2);
     }
 
-    // Start the quiz
-    showNextQuestion();
+    // Start the quiz when the page loads
+    window.onload = startQuiz;
   </script>
 </body>
 </html>
