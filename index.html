@@ -20,8 +20,7 @@
       align-items: center;
       background-color: #f0f0f0;
     }
-    body::before {
-      content: "";
+    .image {
       position: absolute;
       top: 0;
       left: 0;
@@ -30,7 +29,7 @@
       background-image: url('image.jpg'); /* Replace with your image path */
       background-size: cover;
       background-position: center;
-      opacity: 0.3;
+      opacity: 0;
     }
     #myCanvas {
       position: absolute;
@@ -88,6 +87,7 @@
   </style>
 </head>
 <body>
+  <div class="image"></div>
   <canvas id="myCanvas"></canvas>
   <canvas id="flowerCanvas" class="animationCanvas"></canvas>
   <canvas id="heartCanvas" class="animationCanvas"></canvas>
@@ -275,9 +275,9 @@
     }
 
     function showResultMessage() {
-      ctx.fillStyle = "green";
-      ctx.font = "bold 24px Arial";
-      ctx.fillText("Congratulations rawna2, you have proved your romantic excellence!", c.width / 2 - 300, c.height / 2);
+      const bodyOverlay = document.querySelector('.image');
+      bodyOverlay.style.opacity = 0.3;
+      alert("Congratulations rawna2, you have proved your romantic excellence!");
     }
 
     // Start the quiz
