@@ -256,7 +256,14 @@
       currentQuestion++;
     }
 
+    var opc = 0
+
     function startFlowerAnimation() {
+
+      const bodyOverlay = document.querySelector('.image');
+      opc += 0.05
+      bodyOverlay.style.opacity = opc;
+
       flowerCanvas.style.display = 'block';
       heartCanvas.style.display = 'none';
       sadFaceCanvas.style.display = 'none';
@@ -266,6 +273,11 @@
     }
 
     function startHeartAnimation() {
+
+      const bodyOverlay = document.querySelector('.image');
+      opc += 0.05
+      bodyOverlay.style.opacity = opc;
+      
       flowerCanvas.style.display = 'none';
       heartCanvas.style.display = 'block';
       sadFaceCanvas.style.display = 'none';
@@ -280,8 +292,6 @@
     }
 
     function showResultMessage() {
-      const bodyOverlay = document.querySelector('.image');
-      bodyOverlay.style.opacity = 0.3;
       alert("Congratulations rawna2, you have proved your romantic excellence!");
     }
     function showResultMessageFail() {
