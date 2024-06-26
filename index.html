@@ -226,25 +226,30 @@
     const questionElement = document.getElementById('question');
     const questionHeader = document.getElementById('questionHeader');
 
+    var love = false
     function showNextQuestion() {
       if (currentQuestion < questions.length) {
         questionElement.innerText = questions[currentQuestion];
         questionHeader.innerText = `Question for you rawna2 to test your ${questionNouns[currentQuestion]}`;
         quizContainer.style.display = 'block';
       } else {
-        showResultMessage();
         quizContainer.style.display = 'none';
+        if(love) showResultMessage();
+        else showResultMessageFail();
       }
     }
     function answerQuestion(answer) {
       quizContainer.style.display = 'none';
       if (answer === 'love') {
+        love = true
         startFlowerAnimation();
         setTimeout(showNextQuestion, 1000);
       } else if (answer === 'heart') {
+        love = false
         startHeartAnimation();
         setTimeout(showNextQuestion, 1000);
       } else {
+        love = false
         startSadFaceAnimation();
         setTimeout(showNextQuestion, 1000);
       }
@@ -278,6 +283,11 @@
       const bodyOverlay = document.querySelector('.image');
       bodyOverlay.style.opacity = 0.3;
       alert("Congratulations rawna2, you have proved your romantic excellence!");
+    }
+    function showResultMessageFail() {
+      //const bodyOverlay = document.querySelector('.image');
+      //bodyOverlay.style.opacity = 0.3;
+      alert("you have failed me rawna2!");
     }
 
     // Start the quiz
