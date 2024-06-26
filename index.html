@@ -84,6 +84,25 @@
     #quizContainer button.middle:hover {
       background-color: #e0a800;
     }
+    #restartButton{
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 50%;
+      top: 50%;
+      transform: translateX(-50%) translateY(-50%);
+
+      margin-top: 10px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      background-color: #9f4e77;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      margin-right: 10px;
+    }
   </style>
 </head>
 <body>
@@ -100,7 +119,13 @@
     <button onclick="answerQuestion('notLove')">No</button>
   </div>
 
+  <button id="restartButton" onclick="restartQuiz()">Restart Quiz</button>
+
   <script>
+    function restartQuiz() {
+      location.reload();
+    }
+
     var c = document.getElementById("myCanvas");
     c.width = window.innerWidth;
     c.height = window.innerHeight;
@@ -277,7 +302,7 @@
       const bodyOverlay = document.querySelector('.image');
       opc += 0.05
       bodyOverlay.style.opacity = opc;
-      
+
       flowerCanvas.style.display = 'none';
       heartCanvas.style.display = 'block';
       sadFaceCanvas.style.display = 'none';
@@ -292,9 +317,17 @@
     }
 
     function showResultMessage() {
+
+      const bodyOverlay = document.querySelector('#restartButton');
+      bodyOverlay.style.display = 'block'
+
       alert("Congratulations rawna2, you have proved your romantic excellence!");
     }
     function showResultMessageFail() {
+
+      const bodyOverlay = document.querySelector('#restartButton');
+      bodyOverlay.style.display = 'block'
+
       //const bodyOverlay = document.querySelector('.image');
       //bodyOverlay.style.opacity = 0.3;
       alert("you have failed me rawna2!");
