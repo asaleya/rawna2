@@ -8,7 +8,7 @@
         @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600&display=swap');
         body {
             font-family: 'Raleway', sans-serif;
-            background-color: #f8f9fa;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
             color: #343a40;
             margin: 0;
             padding: 0;
@@ -50,6 +50,26 @@
             opacity: 0;
             animation: fadeInText 1s ease-in-out forwards;
             animation-delay: 2s;
+        }
+        .hidden-message {
+            display: none;
+            font-size: 1.2em;
+            color: #28a745;
+            margin-top: 20px;
+        }
+        .show-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1em;
+            color: #ffffff;
+            background-color: #ff6b6b;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .show-button:hover {
+            background-color: #e55353;
         }
         @keyframes fadeIn {
             from {
@@ -93,15 +113,22 @@
             }
         }
     </style>
+    <script>
+        function showHiddenMessage() {
+            document.getElementById('hidden-message').style.display = 'block';
+        }
+    </script>
 </head>
 <body>
     <div class="container">
         <h1>Forgive Me</h1>
-        <p style="animation-delay: 0.5s;">I know it's been a while since we last spoke, and I'm truly sorry for the silence.</p>
+        <p style="animation-delay: 0.5s;">I know it's been a day since we last spoke, and I'm truly sorry for the silence.</p>
         <p style="animation-delay: 1s;">Please know that you have always been in my thoughts and my heart.</p>
         <p class="heart">❤️</p>
-        <p style="animation-delay: 1.5s;">Life got in the way, but my love and care for you remain unchanged.</p>
-        <p class="signature">With all my love,<br>Your Name</p>
+        <p style="animation-delay: 1.5s;">Work got in the way, but care for you remain unchanged.</p>
+        <p class="signature">With all my love,<br>Amr Diab</p>
+        <button class="show-button" onclick="showHiddenMessage()">Click for a Special Message</button>
+        <div id="hidden-message" class="hidden-message">You're always in my heart, and I promise to make more time for you.</div>
     </div>
 </body>
 </html>
