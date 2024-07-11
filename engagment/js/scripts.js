@@ -160,7 +160,7 @@
     // Get image Sprite
     const image = images[index]
     // Set the url to get a random image from Unsplash Source, given image dimensions
-    const url = `https://source.unsplash.com/random/${image.width}x${image.height}`
+    const url = `./img1`
     // Get the corresponding rect, to store more data needed (it is a normal Object)
     const rect = rects[index]
     // Create a new AbortController, to abort fetch if needed
