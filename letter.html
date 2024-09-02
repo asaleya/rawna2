@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Love Letter</title>
+    <style>
+        body {
+            background-color: #ffecf0;
+            color: #333;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            padding-top: 20%;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2em;
+            color: #e63946;
+        }
+
+        p {
+            font-size: 1.2em;
+            margin: 20px 0;
+        }
+
+        .heart {
+            font-size: 5em;
+            color: #ff006e;
+            animation: pulse 1s infinite;
+            cursor: pointer;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        #message {
+            display: none;
+            font-size: 1.5em;
+            color: #0077b6;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>You're My Everything Roori</h1>
+        <p>Click the heart below to see a special message!</p>
+        <div class="heart" onclick="showMessage()">❤️</div>
+        <p id="message">I love you more than words can say! 💖</p>
+    </div>
+
+    <script>
+        function showMessage() {
+          const pass = prompt('enter pass')
+          
+          if(pass == '201255'){
+
+            const message = document.getElementById('message');
+            message.style.display = 'block';
+          }
+          else alert("3'alaaaaat :(")
+        }
+    </script>
+</body>
+</html>
